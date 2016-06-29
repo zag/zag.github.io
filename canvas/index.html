@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+    <head>
+          
+    <title>HTML5 diagram editor</title>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=9">
+        <style>
+        html, body{width:100%; min-height:100vh;}
+*{margin:0;padding:0;}
+#workarea{width:100%; height:100vh; background-color: rgb(255, 255, 255);
+     background-image: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAwIDEwIEwgNDAgMTAgTSAxMCAwIEwgMTAgNDAgTSAwIDIwIEwgNDAgMjAgTSAyMCAwIEwgMjAgNDAgTSAwIDMwIEwgNDAgMzAgTSAzMCAwIEwgMzAgNDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2UwZTBlMCIgb3BhY2l0eT0iMC4yIiBzdHJva2Utd2lkdGg9IjEiLz48cGF0aCBkPSJNIDQwIDAgTCAwIDAgMCA0MCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZTBlMGUwIiBzdHJva2Utd2lkdGg9IjEiLz48L3BhdHRlcm4+PC9kZWZzPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JpZCkiLz48L3N2Zz4="); 
+    background-position: -1px -1px; z-index: 3;}
+
+#drag span {
+  background:#fff;
+  color:  #000;
+  font-family: arial, sans-serif;
+  text-align: center;
+  font-weight: bold;
+  padding: 5px 40px;
+  line-height: 2rem;
+  width: 200px;
+  position: absolute;
+  top: 30px;
+  right: -80px;
+  -webkit-transform: rotate(45deg);
+  -moz-transform: rotate(45deg);
+  -o-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+
+#drag {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 200px;
+  overflow: hidden;
+  height: 200px;
+  z-index: 5;
+}
+       
+        </style>
+    </head>
+    <body>
+<script type="text/javascript">        
+if (typeof(poligonosRy) == 'undefined') {
+
+    poligonosRy =
+[{"X":229,"Y":242,"R":85,"L":3,"paso":1,"color":"#4CD964","bool":false},{"X":101,"Y":250,"R":80,"L":5,"paso":2,"color":"#FF3B30","bool":false},{"X":106,"Y":408,"R":75,"L":8,"paso":3,"color":"#1BADF8","bool":false},{"X":91,"Y":91,"R":70,"L":5,"paso":1,"color":"#FF9500","bool":false},{"X":240,"Y":401,"R":65,"L":7,"paso":2,"color":"#CC73E1","bool":false},{"X":238,"Y":90,"R":65,"L":8,"paso":2,"color":"#Fe7391","bool":false}];    
+    
+}
+poligonosRy.sort(function(a, b){
+ return b.R-a.R
+})
+
+</script>
+        
+<canvas id= "workarea">Нет поддержки canvas :( </canvas>
+<!--drag and drop polygons in canvas.-->
+<div id="drag"><span>Перетаскивание</span></div>   
+<script type="text/javascript">
+    window.onload = function() {
+
+    
+var canvas = document.getElementById('workarea');
+if (canvas && canvas.getContext) {
+var ctx = canvas.getContext('2d');
+if (ctx) {
+  
+var cw = canvas.width = window.innerWidth;
+var ch = canvas.height = window.innerHeight;
+  
+  
+ctx.globalAlpha=0.95;
+var isDragging = false;
+var delta = new Object();
+
+    
+function oMousePos(canvas, evt) {
+    var rect = canvas.getBoundingClientRect();
+    return {
+        x: Math.round(evt.clientX - rect.left),
+        y: Math.round(evt.clientY - rect.top)
+    };
+}
+    
+function drawPoligon(X,Y,R,L,paso,color){
+               var beta= L / paso;
+               var rad = (2*Math.PI) / beta;
+               ctx.fillStyle = color;
+               ctx.beginPath();
+                     for( var i = 0; i<L; i++ ){
+                     x = X + R * Math.cos( rad*i );
+                     y = Y + R * Math.sin( rad*i );
+                     ctx.lineTo(x, y);
+                     }
+               ctx.closePath();
+               ctx.fill();   
+               }
+function drawPoligons(){
+    ctx.rect(20,20,300,550);
+    ctx.stroke();
+     for( var i = 0; i< poligonosRy.length; i++)   {
+          drawPoligon(poligonosRy[i].X,poligonosRy[i].Y, poligonosRy[i].R, poligonosRy[i].L, poligonosRy[i].paso, poligonosRy[i].color);}   
+}                                    
+                                             
+
+
+drawPoligons();      
+   
+// Нажатие кнопки мыши
+canvas.addEventListener('mousedown', function(evt) {
+
+isDragging = true; // включаем режим перетягивания
+var mousePos = oMousePos(canvas, evt);
+for( var i = 0; i< poligonosRy.length; i++)   {
+drawPoligon(poligonosRy[i].X,poligonosRy[i].Y, poligonosRy[i].R, poligonosRy[i].L, poligonosRy[i].paso, poligonosRy[i].color);
+      if(ctx.isPointInPath(mousePos.x,mousePos.y)){
+      poligonosRy[i].bool= true;
+      delta.x = poligonosRy[i].X-mousePos.x;
+      delta.y = poligonosRy[i].Y-mousePos.y;
+      break;
+      }else{
+      poligonosRy[i].bool= false;}
+      }
+      
+ctx.clearRect(0, 0, canvas.width, canvas.height);      
+drawPoligons();   
+}, false);
+    
+// Перемещение указателя
+canvas.addEventListener('mousemove', function(evt) {
+ // Только в режиме перемещения
+ if(isDragging){
+   var mousePos = oMousePos(canvas, evt);
+   for( var i = 0; i< poligonosRy.length; i++)   {
+      if (poligonosRy[i].bool) {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);   
+      X = mousePos.x+delta.x,Y=mousePos.y+delta.y
+      poligonosRy[i].X = X;
+      poligonosRy[i].Y = Y;
+      break;
+     }
+  }
+      drawPoligons();   
+}
+}, false);
+
+// mouseup ***************************
+canvas.addEventListener('mouseup', function(evt) {
+    isDragging = false;
+    for( var i = 0; i< poligonosRy.length; i++)   {poligonosRy[i].bool = false}
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    drawPoligons();   
+    }, false);
+
+// Mouseout event
+canvas.addEventListener('mouseout', function(evt) {
+    isDragging = false;
+    for( var i = 0; i< poligonosRy.length; i++)   {poligonosRy[i].bool = false}
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    drawPoligons();   
+    }, false);
+  window.addEventListener('resize', function () {
+      console.log("Redraw!");
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      drawPoligons();   
+  });
+}
+}
+}
+        </script>
+    </body>
+</html>
