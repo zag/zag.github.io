@@ -1,0 +1,151 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Demo of video streaming</title>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.js"></script>
+    <link rel="stylesheet" type="text/css" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+    <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/modernizr/2.7.1/modernizr.min.js"></script>
+    <style>
+    .emoSprite {
+    
+    -ms-high-contrast-adjust: none;
+    background-image: url(broken_heart_default_80_anim.png);
+    background-size: 80px 8400px;
+    height: 8400px;
+    -webkit-transform: translateY(-4000px);
+    -webkit-animation: brokenheart_extraLarge 4.375s steps(105) infinite;
+    transform: translateY(-4000px); 
+   -webkit-animation: brokenheart_extraLarge 4.375s steps(105) infinite; 
+    animation: brokenheart_extraLarge 4.375s steps(105) infinite; 
+    width: 80px;
+    display: block;
+    }
+    .emoticon {
+    width: 80px;
+    height: 80px;
+    display: block;
+    vertical-align: middle;
+    color: transparent;
+    font-size: 0;
+    overflow: hidden;
+    margin:  auto ;
+}
+
+@keyframes brokenheart_extraLarge {
+    0% {
+        transform: translateY(0)
+    }
+
+    100% {
+        transform: translateY(-8400px)
+    }
+}
+
+@-moz-keyframes brokenheart_extraLarge {
+    0% {
+        -moz-transform: translateY(0)
+    }
+
+    100% {
+        -moz-transform: translateY(-8400px)
+    }
+}
+
+@-webkit-keyframes brokenheart_extraLarge {
+    0% {
+        -webkit-transform: translateY(0)
+    }
+
+    100% {
+        -webkit-transform: translateY(-8400px)
+    }
+}
+
+
+   .homepage-hero-module {
+  border-right: none;
+  border-left: none;
+  position: relative;
+}
+.no-video .video-container video,
+.touch .video-container video {
+  display: none;
+}
+.no-video .video-container .poster,
+.touch .video-container .poster {
+  display: block !important;
+}
+.video-container {
+  position: relative;
+  bottom: 0%;
+  left: 0%;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  background: #000;
+}
+.video-container .poster img {
+  width: 100%;
+  bottom: 0;
+  position: absolute;
+}
+.video-container .filter {
+  z-index: 100;
+  position: absolute;
+  background: rgba(0, 0, 0, 0.4);
+  width: 100%;
+}
+.video-container .title-container {
+  z-index: 1000;
+  position: absolute;
+  top: 35%;
+  width: 100%;
+  text-align: center;
+  color: #fff;
+}
+.video-container .description .inner {
+  font-size: 1em;
+  width: 45%;
+  margin: 0 auto;
+}
+.video-container .link {
+  position: absolute;
+  bottom: 3em;
+  width: 100%;
+  text-align: center;
+  z-index: 1001;
+  font-size: 2em;
+  color: #fff;
+}
+.video-container .link a {
+  color: #fff;
+}
+.video-container video {
+  position: absolute;
+  z-index: 0;
+}
+.video-container video.fillWidth {
+  width: 100%;
+}
+
+</style>
+</head>
+<body>
+    <div class="video-container">
+        <div class="title-container">
+            <div class="headline">
+                	<h1>Welcome to video ads</h1>
+
+            </div>
+            <div class="description">
+                <div class="inner">Text of video comments.Text of video comments.Text of video comments.Text of video comments.<span class="emoticon"><span class="emoSprite">(u)</span></span></div>
+            </div>
+        </div>
+        <div class="filter"></div>
+        <video autoplay loop class="fillWidth">
+            <source src="dock.mp4" type="video/mp4" />Your browser does not support the video tag. I suggest you upgrade your browser.</video>
+    </div>
+
+</body>
